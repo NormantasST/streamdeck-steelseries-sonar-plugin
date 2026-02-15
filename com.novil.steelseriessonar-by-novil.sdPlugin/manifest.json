@@ -1,12 +1,12 @@
 {
 	"Name": "Sonar Controller",
-	"Version": "1.0.0.2",
+	"Version": "1.0.1.2",
 	"Author": "NOVIL, Normantas Stankevičius",
 	"Actions": [
 		{
 			"Name": "Rotate Output Devices",
 			"UUID": "com.novil.steelseriessonar-by-novil.rotate-output-audio-device",
-			"Icon": "imgs/actions/rotate-output-devices/icon@2x",
+			"Icon": "imgs/actions/rotate-output-devices/icon",
 			"Tooltip": "Rotates Selected Output Device",
 			"PropertyInspectorPath": "ui/rotate-audio-output-device.html",
 			"Controllers": [
@@ -21,10 +21,10 @@
 		}
 	],
 	"Category": "Sonar Controller",
-	"CategoryIcon": "imgs/plugin/category-icon@2x",
+	"CategoryIcon": "imgs/plugin/category-icon",
 	"CodePath": "bin/plugin.js",
 	"Description": "Allows to control SteelSeries Sonar via Streamdeck.",
-	"Icon": "imgs/plugin/marketplace@2x",
+	"Icon": "imgs/plugin/marketplace",
 	"SDKVersion": 3,
 	"Software": {
 		"MinimumVersion": "6.9"
