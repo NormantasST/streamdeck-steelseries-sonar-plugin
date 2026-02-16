@@ -3,8 +3,10 @@ import streamDeck from '@elgato/streamdeck';
 import { Agent as HttpAgent } from 'http';
 import { Agent as HttpsAgent } from 'https';
 import fetch from "node-fetch";
-import { AudioDevice, ClassicRedirection, FallbackSetting, FallbackSettings } from '../models/types/sonar-models.type';
+import { AudioDevice, ClassicRedirection, FallbackSetting, FallbackSettings, RedirectionEnum } from '../models/types/sonar-models.type';
 import { logErrorAndThrow } from '../helpers/streamdeck-logger-helper';
+import { channel } from 'diagnostics_channel';
+import { RedirectionEnumMap } from '../models/Converters/sonar-model-converts';
 
 const logger = streamDeck.logger.createScope("rotate-audio-output-device");
 
@@ -14,11 +16,10 @@ class SonarClient {
     private httpsAgent: HttpsAgent | undefined;
 
     constructor() { }
-    
-    // 1 - Game, 2 -> Chat, 7-> Media, 8 -> Aux
-    
-    // Gets all audio (input, output) devices on users PC. Includes Sonar devices.
-    async putOutputAudioDeviceAsync(deviceId: string, channel: number): Promise<void> {
+        
+    // Updates Channel into Output to selected id.
+    async putOutputAudioDeviceAsync(deviceId: string, redirectionId: RedirectionEnum): Promise<void> {
+        const channel = RedirectionEnumMap.get(redirectionId);
         await this.doHttpRequestAsync(`/ClassicRedirections/${channel}/deviceId/${deviceId}`, "PUT");
     }
     

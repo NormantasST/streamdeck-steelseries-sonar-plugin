@@ -43,3 +43,10 @@ export enum RedirectionEnum {
     Media = "media",
     Aux = "aux",
 }
+
+export enum RedirectionIntEnum {
+    Game = 1,
+    Chat = 2,
+    Media = 7,
+    Aux = 8,
+}

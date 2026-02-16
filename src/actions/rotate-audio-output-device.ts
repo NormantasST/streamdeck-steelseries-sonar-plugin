@@ -22,7 +22,6 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutput> imple
 	}
 
 	override async onKeyDown(ev: KeyDownEvent<RotateOutput>): Promise<void> {
-		// Update the count from the settings.
 		const { settings: localSettings } = ev.payload;
 		const globalSettings = await streamDeck.settings.getGlobalSettings<GlobalSettings>();
 		
@@ -49,10 +48,10 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutput> imple
 		const nextAudioDeviceIndex = allDevices.findIndex((device) => device.id == nextAudioDeviceId);
 		const nextAudioDevice = allDevices[nextAudioDeviceIndex];
 
-		await sonarClient.putOutputAudioDeviceAsync(nextAudioDevice.id, 1);
-		await sonarClient.putOutputAudioDeviceAsync(nextAudioDevice.id, 2);
-		await sonarClient.putOutputAudioDeviceAsync(nextAudioDevice.id, 7);
-		await sonarClient.putOutputAudioDeviceAsync(nextAudioDevice.id, 8);
+		await sonarClient.putOutputAudioDeviceAsync(nextAudioDevice.id, RedirectionEnum.Game);
+		await sonarClient.putOutputAudioDeviceAsync(nextAudioDevice.id, RedirectionEnum.Chat);
+		await sonarClient.putOutputAudioDeviceAsync(nextAudioDevice.id, RedirectionEnum.Media);
+		await sonarClient.putOutputAudioDeviceAsync(nextAudioDevice.id, RedirectionEnum.Aux);
 
 		globalSettings.AllOutput!.deviceName = nextAudioDevice.friendlyName;
 		globalSettings.AllOutput!.deviceId = nextAudioDevice.id;
