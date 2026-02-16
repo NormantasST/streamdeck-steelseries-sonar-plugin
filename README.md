@@ -14,7 +14,7 @@ This project is free to use for personal and commercial use. It would be nice to
 
 
 - Data is Synced between Actions (buttons) using Events by notifying all Actions of a change. This allows to keep uniformed information between Actions.
-- Data is periodically updated every 60 seconds in case changes happened from SteelSeries Sonar Application.
+- Data is periodically Synced from Sonar every 60 seconds in case changes happened from SteelSeries Sonar Application.
 
 ### Rotate Audio Output
 
