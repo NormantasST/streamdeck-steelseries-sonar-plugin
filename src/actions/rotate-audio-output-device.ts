@@ -4,6 +4,7 @@ import { INotifyableAction } from "../models/interfaces/notifyable-users.interfa
 import { GlobalSettings } from "../models/types/global-settings.type";
 import sonarClient from '.././services/sonar-client';
 import { RedirectionEnum } from "../models/types/sonar-models.type";
+import { wrapText } from "../helpers/plugin-helper";
 
 const logger = streamDeck.logger.createScope("rotate-audio-output-device");
 
@@ -11,7 +12,7 @@ const logger = streamDeck.logger.createScope("rotate-audio-output-device");
 export class RotateOutputAudioDevice extends SingletonAction<RotateOutput> implements INotifyableAction {
 	static async updateActionStateAsync(action: any): Promise<void> {
 		const globalSettings = await streamDeck.settings.getGlobalSettings<GlobalSettings>();
-		await action.setTitle(globalSettings.AllOutput!.deviceName);
+		await action.setTitle(wrapText(globalSettings.AllOutput!.deviceName));
 	}
 
 	override async onWillAppear(ev: WillAppearEvent<RotateOutput>): Promise<void> {

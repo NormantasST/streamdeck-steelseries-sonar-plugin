@@ -1,4 +1,4 @@
-import { GlobalSettings } from "./global-settings-types";
+import { GlobalSettings } from "../types/global-settings.type";
 
 export interface INotifyableAction{
     notifyActions(globalSettings: GlobalSettings): Promise<void>
