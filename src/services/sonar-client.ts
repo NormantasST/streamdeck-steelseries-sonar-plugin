@@ -3,10 +3,9 @@ import streamDeck from '@elgato/streamdeck';
 import { Agent as HttpAgent } from 'http';
 import { Agent as HttpsAgent } from 'https';
 import fetch from "node-fetch";
-import { AudioDevice, ClassicRedirection, FallbackSetting, FallbackSettings, RedirectionEnum } from '../models/types/sonar-models.type';
+import { AudioDevice, ClassicRedirection, FallbackSetting, FallbackSettings, RedirectionEnum, SonarMode, StreamRedirection, StreamRedirectionEnum } from '../models/types/sonar-models.type';
 import { logErrorAndThrow } from '../helpers/streamdeck-logger-helper';
-import { channel } from 'diagnostics_channel';
-import { RedirectionEnumMap } from '../models/Converters/sonar-model-converts';
+import { RedirectionEnumMap, StreamRedirectionEnumMap } from '../models/converters/sonar-model-converts';
 
 const logger = streamDeck.logger.createScope("rotate-audio-output-device");
 
@@ -18,11 +17,20 @@ class SonarClient {
     constructor() { }
         
     // Updates Channel into Output to selected id.
+    async putStreamOutputAudioDeviceAsync(deviceId: string, redirectionId: StreamRedirectionEnum): Promise<void> {
+        const channel = StreamRedirectionEnumMap.get(redirectionId);
+        await this.doHttpRequestAsync(`/StreamRedirections/${channel}/deviceId/${deviceId}`, "PUT");
+    }
+    
     async putOutputAudioDeviceAsync(deviceId: string, redirectionId: RedirectionEnum): Promise<void> {
         const channel = RedirectionEnumMap.get(redirectionId);
         await this.doHttpRequestAsync(`/ClassicRedirections/${channel}/deviceId/${deviceId}`, "PUT");
     }
-    
+
+    public async getSonarModeAsync(): Promise<SonarMode> {
+        return this.doHttpRequestAsync<SonarMode>("/Mode", "GET");
+    }
+
     // Gets all excluded devices (list options: chatRenderer, game, chatCapture, media, aux)
     public async getAllExcludedGameAudioDevicesAsync(): Promise<FallbackSetting[]> {
         const response = await this.doHttpRequestAsync<FallbackSettings>("/FallbackSettings/lists", "GET");
@@ -31,6 +39,10 @@ class SonarClient {
 
     public getDeviceRedirectionsAsync(): Promise<ClassicRedirection[]> {
         return this.doHttpRequestAsync<ClassicRedirection[]>("/ClassicRedirections", "GET");
+    }
+
+    public getStreamDeviceRedirectionsAsync(): Promise<StreamRedirection[]> {
+        return this.doHttpRequestAsync<StreamRedirection[]>("/StreamRedirections", "GET");
     }
 
     public async getAllOutputAudioDevicesAsync(): Promise<AudioDevice[]> {
@@ -63,9 +75,8 @@ class SonarClient {
             response = await fetch(uri, requestBody);
         }
 
-        if (!response.ok) {
-            logErrorAndThrow(logger, `Error doing a Sonar Client Request: StatusCode: ${response.status} Body: ${JSON.stringify(response.body)}`)
-        }
+        if (!response.ok)
+            throw logErrorAndThrow(logger, `Error doing a Sonar Client Request: StatusCode: ${response.status} Body: ${JSON.stringify(response.body)}`)
 
         return await response.json() as TResponse;
     }

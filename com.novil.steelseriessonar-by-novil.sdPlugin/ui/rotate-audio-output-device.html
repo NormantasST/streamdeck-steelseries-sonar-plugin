@@ -11,6 +11,24 @@
     <!--
         Learn more about property inspector components at https://sdpi-components.dev/docs/components
     -->
+    <sdpi-item label="Rotation Mode">
+        <sdpi-select setting="rotationMode" default="all-auto-select" placeholder="Please choose a color">
+            <option value="all-auto-detect">All (Auto Detect)</option>
+            <optgroup label="Classic Mode">
+                <option value="all-classic">All (Classic Only)</option>
+                <option value="classic-game">Game</option>
+                <option value="classic-chat">Chat</option>
+                <option value="classic-media">Media</option>
+                <option value="classic-aux">Aux</option>
+            </optgroup>
+            <optgroup label="Streaming Mode">
+                <option value="all-stream">All (Streaming Only)</option>
+                <option value="stream-personal-mix">Personal Mix</option>
+                <option value="stream-stream-mix">Stream Mix</option>
+            </optgroup>
+        </sdpi-select>
+    </sdpi-item>
+    
     <sdpi-item label="Allow Excluded Devices">
         <sdpi-checkbox setting="allowExcludedDevices" label="Will use excluded devices" default="false"></sdpi-checkbox>
     </sdpi-item>

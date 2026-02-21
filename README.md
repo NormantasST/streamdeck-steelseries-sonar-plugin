@@ -18,7 +18,7 @@ This project is free to use for personal and commercial use. It would be nice to
 
 ### Rotate Audio Output
 
-- **Rotates your current output device.**
+- **Rotates your current output device**: `All (Auto Detect)` (default), `All (Classic Only)`, `Game`, `Chat`, `Media`, `Aux`, `All (Streaming Only)`, `Personal Mix`, `Stream Mix`.
 - User can select if they want to include or exclude `Excluded Devices`.
 
 ## Basic Setup
