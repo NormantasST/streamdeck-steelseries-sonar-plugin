@@ -19,7 +19,7 @@ export async function getCurrentSonarSettings(): Promise<GlobalSettings>
     const mediaDevice = allOutputDevices.find((x: { id: any; }) => x.id == classicRedirections.find((x) => x.id == RedirectionEnum.Media)?.deviceId);
     const auxDevice = allOutputDevices.find((x: { id: any; }) => x.id == classicRedirections.find((x) => x.id == RedirectionEnum.Aux)?.deviceId);
 
-    const personalDevice = allOutputDevices.find((x: { id: any; }) => x.id == streamRedirections.find((x) => x.streamRedirectionId == StreamRedirectionEnum.StreamMix)?.deviceId);
+    const personalDevice = allOutputDevices.find((x: { id: any; }) => x.id == streamRedirections.find((x) => x.streamRedirectionId == StreamRedirectionEnum.PersonalMix)?.deviceId);
     const streamMixDevice = allOutputDevices.find((x: { id: any; }) => x.id == streamRedirections.find((x) => x.streamRedirectionId == StreamRedirectionEnum.StreamMix)?.deviceId);
 
     const globalSettings: GlobalSettings = {
