@@ -1,4 +1,4 @@
-import streamDeck, { Device } from '@elgato/streamdeck';
+import streamDeck from '@elgato/streamdeck';
 import sonarClient from './services/sonar-client';
 import { RedirectionEnum, StreamRedirectionEnum } from './models/types/sonar-models.type';
 import { GlobalSettings } from './models/types/global-settings.type';
