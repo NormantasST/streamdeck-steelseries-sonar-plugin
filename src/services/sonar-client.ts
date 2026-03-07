@@ -7,7 +7,7 @@ import type { AudioDevice, ClassicRedirection, FallbackSetting, FallbackSettings
 import { logErrorAndThrow } from '../helpers/streamdeck-logger-helper';
 import { RedirectionEnumMap, StreamRedirectionEnumMap } from '../models/converters/sonar-model-converts';
 
-const logger = streamDeck.logger.createScope("rotate-audio-output-device");
+const logger = streamDeck.logger.createScope("sonar-client");
 
 class SonarClient {
     private sonarUrl: string | undefined;
@@ -80,7 +80,7 @@ class SonarClient {
             logger.info(`Error Body: ${JSON.stringify(error)}`)
         }
 
-        if (response === undefined)
+        if (response === undefined) 
             throw logErrorAndThrow(logger, `Response is undefined.`);
 
         if (!response.ok)

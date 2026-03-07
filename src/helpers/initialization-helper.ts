@@ -6,7 +6,7 @@ import { getCurrentSonarSettingsAsync } from "../sonar-helper";
 export async function initializeGlobalSettingsAsync() {
     const globalSettings = await getCurrentSonarSettingsAsync();
     await streamDeck.settings.setGlobalSettings(globalSettings);
-    
+
     setInterval(async () => {
         const globalSettings = await getCurrentSonarSettingsAsync();
         await streamDeck.settings.setGlobalSettings(globalSettings);
@@ -14,13 +14,12 @@ export async function initializeGlobalSettingsAsync() {
     }, 60000);
 }
 
-export async function notifyAllAsync()
-{
-    streamDeck.actions.forEach(async (action) => {
+export async function notifyAllAsync() {
+    await Promise.all(streamDeck.actions.map(async (action) => {
         switch (action.manifestId) {
             case ROTATE_OUTPUT_DEVICES:
-                await RotateOutputAudioDevice.updateThisActionAsync(action);
+                return RotateOutputAudioDevice.updateThisActionAsync(action);
                 break;
         }
-    });
+    }));
 }

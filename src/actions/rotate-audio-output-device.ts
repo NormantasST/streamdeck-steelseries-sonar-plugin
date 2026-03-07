@@ -4,7 +4,7 @@ import { ROTATE_OUTPUT_DEVICES } from "../constants/action-uuids.constants";
 import type { INotifyableAction } from "../models/interfaces/notifyable-users.interface";
 import type { GlobalSettings } from "../models/types/global-settings.type";
 import sonarClient from '.././services/sonar-client';
-import type { AudioDevice} from "../models/types/sonar-models.type";
+import type { AudioDevice } from "../models/types/sonar-models.type";
 import { RedirectionEnum, SonarMode, StreamRedirectionEnum } from "../models/types/sonar-models.type";
 import { wrapText } from "../helpers/plugin-helper";
 import { logErrorAndThrow } from "../helpers/streamdeck-logger-helper";
@@ -23,13 +23,12 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 
 	async notifyRelatedActionsAsync(globalSettings: GlobalSettings): Promise<void> {
 		await streamDeck.settings.setGlobalSettings(globalSettings);
-		streamDeck.actions.forEach(async (action) => {
+		await Promise.all(streamDeck.actions.map(async (action) => {
 			switch (action.manifestId) {
 				case ROTATE_OUTPUT_DEVICES:
-					await RotateOutputAudioDevice.updateThisActionAsync(action);
-					break;
+					return RotateOutputAudioDevice.updateThisActionAsync(action);
 			}
-		});
+		}));
 	}
 
 	override async onWillAppear(ev: WillAppearEvent<RotateOutputSettings>): Promise<void> {
@@ -64,7 +63,7 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 
 		await this.notifyRelatedActionsAsync(globalSettings);
 	}
- 
+
 	static async initializeActionAsync(action: any) {
 		await RotateOutputAudioDevice.updateThisActionAsync(action);
 	}
@@ -104,12 +103,12 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 			case RotationMode.StreamMix:
 				return globalSettings.streamMixChannel!;
 			case RotationMode.AllAutoDetect:
-				if (sonarMode == SonarMode.Classic) 
+				if (sonarMode == SonarMode.Classic)
 					return globalSettings.gameChannel!;
 
-				if (sonarMode == SonarMode.Streaming) 
+				if (sonarMode == SonarMode.Streaming)
 					return globalSettings.personalMixChannel!;
-				
+
 				break;
 		}
 
@@ -172,12 +171,11 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 	static async filterAvailableDevicesAsync(allDevices: AudioDevice[], allowExcludedDevices: boolean): Promise<string[]> {
 		if (allowExcludedDevices)
 			return allDevices.map((device) => device.id);
-		else
-		{
+		else {
 			const excludedGameDevices = await sonarClient.getAllExcludedGameAudioDevicesAsync()
 			return excludedGameDevices.map((device) => device.id);
 		}
-	} 
+	}
 
 	static async getCurrentDeviceIdAsync(
 		globalSettings: GlobalSettings,
@@ -191,7 +189,7 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 		const currentOutputDeviceIndex = availableDeviceIds.findIndex((id) => id == currentRenderDeviceId) ?? 0;
 		const nextAudioDeviceIdIndex = currentOutputDeviceIndex + 1 < availableDeviceIds.length ? currentOutputDeviceIndex + 1 : 0;
 		const nextAudioDeviceId = availableDeviceIds[nextAudioDeviceIdIndex];
-		
+
 		const nextAudioDeviceIndex = allDevices.findIndex((device) => device.id == nextAudioDeviceId);
 		return allDevices[nextAudioDeviceIndex];
 	}

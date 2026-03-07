@@ -10,4 +10,5 @@ await initializeGlobalSettingsAsync();
 
 streamDeck.actions.registerAction(new RotateOutputAudioDevice());
 
-await streamDeck.connect();
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+streamDeck.connect();
