@@ -1,9 +1,9 @@
-
 import streamDeck from '@elgato/streamdeck';
 import { Agent as HttpAgent } from 'http';
 import { Agent as HttpsAgent } from 'https';
-import fetch, { Response } from "node-fetch";
-import { AudioDevice, ClassicRedirection, FallbackSetting, FallbackSettings, RedirectionEnum, SonarMode, StreamRedirection, StreamRedirectionEnum } from '../models/types/sonar-models.type';
+import type { Response } from "node-fetch";
+import fetch from "node-fetch";
+import type { AudioDevice, ClassicRedirection, FallbackSetting, FallbackSettings, RedirectionEnum, SonarMode, StreamRedirection, StreamRedirectionEnum } from '../models/types/sonar-models.type';
 import { logErrorAndThrow } from '../helpers/streamdeck-logger-helper';
 import { RedirectionEnumMap, StreamRedirectionEnumMap } from '../models/converters/sonar-model-converts';
 
@@ -15,13 +15,13 @@ class SonarClient {
     private httpsAgent: HttpsAgent | undefined;
 
     constructor() { }
-        
+
     // Updates Channel into Output to selected id.
     async putStreamOutputAudioDeviceAsync(deviceId: string, redirectionId: StreamRedirectionEnum): Promise<void> {
         const channel = StreamRedirectionEnumMap.get(redirectionId);
         await this.doHttpRequestAsync(`/StreamRedirections/${channel}/deviceId/${deviceId}`, "PUT");
     }
-    
+
     async putOutputAudioDeviceAsync(deviceId: string, redirectionId: RedirectionEnum): Promise<void> {
         const channel = RedirectionEnumMap.get(redirectionId);
         await this.doHttpRequestAsync(`/ClassicRedirections/${channel}/deviceId/${deviceId}`, "PUT");
@@ -54,7 +54,6 @@ class SonarClient {
         return this.doHttpRequestAsync<AudioDevice[]>("/AudioDevices", "GET");
     }
 
-    
     private async doHttpRequestAsync<TResponse>(route: string, method: string, searchParams?: Record<string, string>, body?: object): Promise<TResponse> {
         let uri = await this.generateHttpRequestUriAsync(route, searchParams);
         const requestBody = {
@@ -99,24 +98,20 @@ class SonarClient {
     }
 
     private async fetchSonarUrlAsync(): Promise<string> {
-        const apiResponse = await fetch('https://127.0.0.1:6327/subApps', { agent: this.getHttpsAgent()});
-    
+        const apiResponse = await fetch('https://127.0.0.1:6327/subApps', { agent: this.getHttpsAgent() });
+
         // TODO: Add proper Typescript type.
         const content = await apiResponse.json() as any;
         return content.subApps.sonar.metadata.webServerAddress;
     }
 
     private async getSonarUrlAsync() {
-        if (this.sonarUrl === undefined)
-            this.sonarUrl =  await this.fetchSonarUrlAsync();
-
+        this.sonarUrl ??= await this.fetchSonarUrlAsync();
         return this.sonarUrl;
     }
 
     private getHttpAgent() {
-        if (this.httpAgent === undefined)
-            this.httpAgent = this.generateHttpAgent();
-
+        this.httpAgent ??= this.generateHttpAgent();
         return this.httpAgent;
     }
 
@@ -129,10 +124,8 @@ class SonarClient {
     }
 
     private getHttpsAgent(): HttpsAgent {
-    if (this.httpsAgent === undefined)
-        this.httpsAgent = this.generateHttpsUnauthorizedAgent();
-
-    return this.httpsAgent;
+        this.httpsAgent ??= this.generateHttpsUnauthorizedAgent();
+        return this.httpsAgent;
     }
 }
 

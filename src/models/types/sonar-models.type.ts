@@ -1,4 +1,3 @@
-
 export type AudioDevice = {
     id: string;
     friendlyName: string;

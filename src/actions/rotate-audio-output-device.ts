@@ -1,31 +1,32 @@
-import streamDeck, { action, DidReceiveSettingsEvent, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+import type { DidReceiveSettingsEvent, KeyDownEvent, WillAppearEvent } from "@elgato/streamdeck";
+import streamDeck, { action, SingletonAction } from "@elgato/streamdeck";
 import { ROTATE_OUTPUT_DEVICES } from "../constants/action-uuids.constants";
-import { INotifyableAction } from "../models/interfaces/notifyable-users.interface";
-import { GlobalSettings } from "../models/types/global-settings.type";
+import type { INotifyableAction } from "../models/interfaces/notifyable-users.interface";
+import type { GlobalSettings } from "../models/types/global-settings.type";
 import sonarClient from '.././services/sonar-client';
-import { AudioDevice, RedirectionEnum, SonarMode, StreamRedirectionEnum } from "../models/types/sonar-models.type";
+import type { AudioDevice} from "../models/types/sonar-models.type";
+import { RedirectionEnum, SonarMode, StreamRedirectionEnum } from "../models/types/sonar-models.type";
 import { wrapText } from "../helpers/plugin-helper";
 import { logErrorAndThrow } from "../helpers/streamdeck-logger-helper";
-import { DeviceData } from "../models/types/device-data.type";
-import { log } from "console";
+import type { DeviceData } from "../models/types/device-data.type";
 
 const logger = streamDeck.logger.createScope("rotate-audio-output-device");
 
 @action({ UUID: ROTATE_OUTPUT_DEVICES })
 export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSettings> implements INotifyableAction {
-	static async updateThisAction(action: any): Promise<void> {
+	static async updateThisActionAsync(action: any): Promise<void> {
 		const globalSettings = await streamDeck.settings.getGlobalSettings<GlobalSettings>();
 		const localSettings = await action.getSettings();
 
 		await action.setTitle(RotateOutputAudioDevice.getTitleFromSettings(globalSettings, localSettings));
 	}
 
-	async notifyRelatedActions(globalSettings: GlobalSettings): Promise<void> {
+	async notifyRelatedActionsAsync(globalSettings: GlobalSettings): Promise<void> {
 		await streamDeck.settings.setGlobalSettings(globalSettings);
 		streamDeck.actions.forEach(async (action) => {
 			switch (action.manifestId) {
 				case ROTATE_OUTPUT_DEVICES:
-					await RotateOutputAudioDevice.updateThisAction(action);
+					await RotateOutputAudioDevice.updateThisActionAsync(action);
 					break;
 			}
 		});
@@ -37,7 +38,7 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 
 	override async onDidReceiveSettings(ev: DidReceiveSettingsEvent<RotateOutputSettings> | any): Promise<void> {
 		if (ev.id === undefined)
-			await RotateOutputAudioDevice.updateThisAction(ev.action);
+			await RotateOutputAudioDevice.updateThisActionAsync(ev.action);
 	}
 
 	override async onKeyDown(ev: KeyDownEvent<RotateOutputSettings>): Promise<void> {
@@ -48,7 +49,7 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 		const allDevices = await sonarClient.getAllAudioDevicesAsync();
 		const currentRenderDeviceId = await RotateOutputAudioDevice.getCurrentDeviceIdAsync(globalSettings, localSettings.rotationMode, sonarMode);
 
-		let availableDeviceIds = await RotateOutputAudioDevice.filterAvailableDevicesAsync(allDevices, localSettings.allowExcludedDevices ?? false);
+		const availableDeviceIds = await RotateOutputAudioDevice.filterAvailableDevicesAsync(allDevices, localSettings.allowExcludedDevices ?? false);
 		const nextAudioDevice = RotateOutputAudioDevice.getNextAudioDevice(allDevices, availableDeviceIds, currentRenderDeviceId);
 		await RotateOutputAudioDevice.setCurrentAudioOutputAsync(nextAudioDevice.id, localSettings.rotationMode, sonarMode)
 
@@ -61,11 +62,11 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 			sonarMode)
 		await streamDeck.settings.setGlobalSettings(globalSettings);
 
-		await this.notifyRelatedActions(globalSettings);
+		await this.notifyRelatedActionsAsync(globalSettings);
 	}
-
+ 
 	static async initializeActionAsync(action: any) {
-		await RotateOutputAudioDevice.updateThisAction(action);
+		await RotateOutputAudioDevice.updateThisActionAsync(action);
 	}
 
 	static updateAudioDeviceGlobalSettings(
@@ -103,13 +104,12 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 			case RotationMode.StreamMix:
 				return globalSettings.streamMixChannel!;
 			case RotationMode.AllAutoDetect:
-				if (sonarMode == SonarMode.Classic) {
+				if (sonarMode == SonarMode.Classic) 
 					return globalSettings.gameChannel!;
-				}
 
-				if (sonarMode == SonarMode.Streaming) {
+				if (sonarMode == SonarMode.Streaming) 
 					return globalSettings.personalMixChannel!;
-				}
+				
 				break;
 		}
 
