@@ -1,14 +1,10 @@
-import streamDeck from '@elgato/streamdeck';
 import sonarClient from './services/sonar-client';
 import { RedirectionEnum, StreamRedirectionEnum } from './models/types/sonar-models.type';
 import type { GlobalSettings } from './models/types/global-settings.type';
 
-const logger = streamDeck.logger.createScope("sonar-helper");
-
 export async function getCurrentSonarSettingsAsync(): Promise<GlobalSettings> {
     const classicRedirections = await sonarClient.getDeviceRedirectionsAsync();
     const streamRedirections = await sonarClient.getStreamDeviceRedirectionsAsync();
-    logger.debug(JSON.stringify(classicRedirections));
 
     const mode = await sonarClient.getSonarModeAsync();
 

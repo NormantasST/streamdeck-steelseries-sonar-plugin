@@ -50,6 +50,9 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 
 		const availableDeviceIds = await RotateOutputAudioDevice.filterAvailableDevicesAsync(allDevices, localSettings.allowExcludedDevices ?? false);
 		const nextAudioDevice = RotateOutputAudioDevice.getNextAudioDevice(allDevices, availableDeviceIds, currentRenderDeviceId);
+		if (nextAudioDevice.id === undefined)
+			throw logErrorAndThrow(logger, "Next audio device is not assigned");
+
 		await RotateOutputAudioDevice.setCurrentAudioOutputAsync(nextAudioDevice.id, localSettings.rotationMode, sonarMode)
 
 		globalSettings.sonarMode = sonarMode;
@@ -59,8 +62,8 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 			nextAudioDevice.friendlyName,
 			localSettings.rotationMode,
 			sonarMode)
-		await streamDeck.settings.setGlobalSettings(globalSettings);
 
+		await streamDeck.settings.setGlobalSettings(globalSettings);
 		await this.notifyRelatedActionsAsync(globalSettings);
 	}
 
@@ -170,10 +173,10 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 
 	static async filterAvailableDevicesAsync(allDevices: AudioDevice[], allowExcludedDevices: boolean): Promise<string[]> {
 		if (allowExcludedDevices)
-			return allDevices.map((device) => device.id);
+			return allDevices.map((device) => device.id ?? "Unknown");
 		else {
 			const excludedGameDevices = await sonarClient.getAllExcludedGameAudioDevicesAsync()
-			return excludedGameDevices.map((device) => device.id);
+			return excludedGameDevices.map((device) => device.id ?? "Unknown");
 		}
 	}
 
@@ -182,7 +185,7 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 		rotationMode: RotationMode,
 		sonarMode: SonarMode): Promise<string> {
 		const channel = RotateOutputAudioDevice.getCurrentChannel(globalSettings, rotationMode, sonarMode)
-		return channel.deviceId;
+		return channel.deviceId ?? "Unknown";
 	}
 
 	static getNextAudioDevice(allDevices: AudioDevice[], availableDeviceIds: string[], currentRenderDeviceId: string): AudioDevice {

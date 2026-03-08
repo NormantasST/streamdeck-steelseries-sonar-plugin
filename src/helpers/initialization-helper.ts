@@ -5,11 +5,15 @@ import { getCurrentSonarSettingsAsync } from "../sonar-helper";
 
 export async function initializeGlobalSettingsAsync() {
     const globalSettings = await getCurrentSonarSettingsAsync();
-    await streamDeck.settings.setGlobalSettings(globalSettings);
+    // Functions weird during Streamdeck setup. Stops working.
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    streamDeck.settings.setGlobalSettings(globalSettings);
 
     setInterval(async () => {
         const globalSettings = await getCurrentSonarSettingsAsync();
-        await streamDeck.settings.setGlobalSettings(globalSettings);
+        // Functions weird during Streamdeeck setup. Stops working.
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        streamDeck.settings.setGlobalSettings(globalSettings);
         await notifyAllAsync();
     }, 60000);
 }
