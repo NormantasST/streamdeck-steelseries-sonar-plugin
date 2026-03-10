@@ -30,10 +30,19 @@ export type FallbackSetting = {
 export enum DeviceRole {
     None = "none", // Marked for not Sonar Audio Devices.
     Game = "game",
-    ChatCapture = "chatCapture",
-    ChatRendered = "chatRenderer",
+    Microphone = "chatCapture",
+    Chat = "chatRenderer",
     Media = "media",
-    Aux = "Aux",
+    Aux = "aux",
+}
+
+// 0, 4 are Unknown.
+export enum ClassicVolumeChannelRoleInt {
+    Game = 2,
+    Chat = 1, // ChatRenderer
+    Media = 5,
+    Aux = 6,
+    Microphone = 3, // ChatCapture
 }
 
 export enum DeviceDataFlow {

@@ -1,2 +1,2 @@
-export const ROTATE_OUTPUT_DEVICES = "com.novil.steelseriessonar-by-novil.rotate-output-audio-device";
-export const CHANGE_OUTPUT_CHANNEL_VOLUME = "com.novil.steelseriessonar-by-novil.change-output-channel-volume";
+export const ROTATE_OUTPUT_DEVICES = "com.novil.steelseriessonar-by-novil.rotate-output-audio-device-v1";
+export const VOLUME_MIXER = "com.novil.steelseriessonar-by-novil.volume-mixer-v1"; 
