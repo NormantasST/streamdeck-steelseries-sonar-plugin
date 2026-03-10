@@ -12,7 +12,6 @@ This project is free to use for personal and commercial use. It would be nice to
 
 ### General
 
-
 - Data is Synced between Actions (buttons) using Events by notifying all Actions of a change. This allows to keep uniformed information between Actions.
 - Data is periodically Synced from Sonar every 60 seconds in case changes happened from SteelSeries Sonar Application.
 
@@ -42,6 +41,10 @@ This project is free to use for personal and commercial use. It would be nice to
 ## Special Thanks!
 
 [SteelSeries GG - Sonar API reverse engineering](https://github.com/wex/sonar-rev) by Niko Hujanen for reverse engineering the OpenAPI definition which helped writing the tool.
+
+## AI (LLM) Usage
+
+This project was being created during early 2026 *Claude Code* / *OpenClaw Craze*. I was using LLMs mostly to learn, research, search information and ask for reviews. *'Agentic Engineering'* did not work besides very simple generic boilerplate logic related to TypeScript itself. 90% of the plugin was created using *'Traditional Software Engineering'* methods.
 
 ## Developers
 
