@@ -15,9 +15,9 @@ export class ChangeChannelVolume extends SingletonAction<ChangeChannelVolumeSett
 	public static async updateThisActionAsync(action: any): Promise<void> {
 		const globalSettings = await streamDeck.settings.getGlobalSettings<GlobalSettings>();
 		const localSettings = await action.getSettings() as ChangeChannelVolumeSettings;
-		
+
 		await action.setTitle(ChangeChannelVolume.generateTitle(globalSettings, localSettings));
-		// TODO Add Image Updating.
+		await action.setImage(ChangeChannelVolume.getImagePath(globalSettings, localSettings));
 	}
 
 	public async notifyRelatedActionsAsync(globalSettings: GlobalSettings): Promise<void> {
@@ -121,34 +121,72 @@ export class ChangeChannelVolume extends SingletonAction<ChangeChannelVolumeSett
 		globalSettings: GlobalSettings,
 		targetChannel: ChangeChannelVolumeChannels,
 		updatedVolume: number) {
-			const globalSettingsChannel = this.getChannelFromGlobalSettings(globalSettings, targetChannel);
-			globalSettingsChannel.volume = updatedVolume;
+		const globalSettingsChannel = this.getChannelFromGlobalSettings(globalSettings, targetChannel);
+		globalSettingsChannel.volume = updatedVolume;
 	}
 
 	private static generateTitle(globalSettings: GlobalSettings, localSettings: ChangeChannelVolumeSettings): string {
 		const currentChanel = ChangeChannelVolume.getChannelFromGlobalSettings(globalSettings, localSettings.targetChannel);
 		const simplifiedChannelName = VolumeChannelTranslations.get(localSettings.targetChannel) ?? localSettings.targetChannel;
-		
+
 		const showMode = localSettings.showTextComponents.includes("mode");
 		const showChannel = localSettings.showTextComponents.includes("channel");
 		const showOutput = localSettings.showTextComponents.includes("output");
-		
+
 		switch (localSettings.mode) {
 			case ChangeChannelVolumeModes.SetVolumeTo:
 				return ""
-				+ (showMode ? "Set\r\n" : "")
-				+ (showChannel ? `${simplifiedChannelName}\r\n` : "")
-				+ (showOutput ? `To ${localSettings.changeChannelValue}%` : "")
+					+ (showMode ? "Set\r\n" : "")
+					+ (showChannel ? `${simplifiedChannelName}\r\n` : "")
+					+ (showOutput ? `To ${localSettings.changeChannelValue}%` : "")
 			case ChangeChannelVolumeModes.IncreaseVolume:
 			case ChangeChannelVolumeModes.DecreaseVolume:
 				const sign = localSettings.mode === ChangeChannelVolumeModes.IncreaseVolume ? "+" : "-";
 				return ""
-				+ (showMode ? `${sign}${localSettings.changeChannelValue}%\r\n` : "")
-				+ (showChannel ? `${simplifiedChannelName.replace(" ", "\r\n")}\r\n` : "")
-				+ (showOutput ? `(${Math.round(currentChanel.volume * 100)}%)` : "")
+					+ (showMode ? `${sign}${localSettings.changeChannelValue}%\r\n` : "")
+					+ (showChannel ? `${simplifiedChannelName.replace(" ", "\r\n")}\r\n` : "")
+					+ (showOutput ? `(${Math.round(currentChanel.volume * 100)}%)` : "")
 			default:
 				throw logErrorAndThrow(logger, `Unknown mode for generating title: ${localSettings.mode}`);
 		}
+	}
+
+	private static getImagePath(globalSettings: GlobalSettings, localSettings: ChangeChannelVolumeSettings): string {
+		const basePath = `imgs/actions/change-channel-volume/`;
+		if (localSettings.mode === ChangeChannelVolumeModes.SetVolumeTo)
+			return basePath + "key-set-to";
+
+		const volume = ChangeChannelVolume.getChannelFromGlobalSettings(globalSettings, localSettings.targetChannel).volume ?? 0;
+		logger.info(`Volume ${volume} mode: ${localSettings.mode}`);
+		if (localSettings.mode === ChangeChannelVolumeModes.IncreaseVolume){
+			if (volume == 1) // 100
+				return basePath + "key-100";
+
+			if (volume >= 0.70 && volume < 1) // From 65 to 100
+				return basePath + "key-75";
+
+			if (volume >= 0.50 && volume < 0.70) // From 50 to 65
+				return basePath + "key-60";
+
+			if (volume < 0.50) // Under 50
+				return basePath + "key-increase-empty";
+		}
+
+		if (localSettings.mode === ChangeChannelVolumeModes.DecreaseVolume){
+			if (volume > 0.50) // Over 50
+				return basePath + "key-decrease-empty";
+
+			if (volume > 0.30 && volume < 0.50) // from 50 to 35
+				return basePath + "key-40";
+
+			if (volume > 0 && volume <= 0.30) // From 0 to 35
+				return basePath + "key-25";
+
+			if (volume ==0) // 0
+				return basePath + "key-0";
+		}
+
+		throw logErrorAndThrow(logger, `Unknown mode for generating image path: ${localSettings.mode}`);
 	}
 }
 
