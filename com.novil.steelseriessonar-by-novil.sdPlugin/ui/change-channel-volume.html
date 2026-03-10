@@ -2,7 +2,7 @@
 <html>
 
 <head lang="en">
-    <title>Rotate Output Devices</title>
+    <title>Volume Mixer Controls</title>
     <meta charset="utf-8" />
     <script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
 </head>
@@ -12,7 +12,7 @@
         Learn more about property inspector components at https://sdpi-components.dev/docs/components
     -->
     <sdpi-item label="Volume Mixer Mode">
-        <sdpi-select setting="mode" default="Classic Master" placeholder="Please Chose a Channel">
+        <sdpi-select setting="mode" default="increase" placeholder="Please Chose a Channel">
             <option value="increase">Increase Volume By %</option>
             <option value="decrease">Decrease Volume By %</option>
             <option value="setVolumeTo">Set Volume To %</option>
@@ -20,7 +20,13 @@
     </sdpi-item>
     
     <sdpi-item label="Volume Change/Set Value">
-        <sdpi-range type="number" setting="changeChannelValue" default="5" placeholder="Enter Volume %" min="0" max="100" showlabels>
+        <sdpi-range
+        type="number"
+        setting="changeChannelValue"
+        default="5"
+        placeholder="Enter Volume %"
+        min="0"
+        max="100" showlabels>
             <span slot="min">0%</span>
             <span slot="max">100%</span>
         </sdpi-range>
