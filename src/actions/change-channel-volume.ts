@@ -68,9 +68,9 @@ export class ChangeChannelVolume extends SingletonAction<ChangeChannelVolumeSett
 		const currentVolume = currentChannel.volume ?? 0;
 		switch (localSettings.mode) {
 			case ChangeChannelVolumeModes.IncreaseVolume:
-				return currentVolume + localSettings.changeChannelValue / 100;
+				return Math.max(currentVolume + localSettings.changeChannelValue / 100, 1);
 			case ChangeChannelVolumeModes.DecreaseVolume:
-				return currentVolume - localSettings.changeChannelValue / 100;
+				return Math.min(currentVolume - localSettings.changeChannelValue / 100, 0);
 			default:
 				throw logErrorAndThrow(logger, `Can't get update volume for Target Channel: ${localSettings.mode}`);
 		}
@@ -143,12 +143,12 @@ type ChangeChannelVolumeSettings = {
 };
 
 enum ChangeChannelVolumeChannels {
-	ClassicMaster = "classic-master",
-	ClassicGame = "classic-game",
-	ClassicChat = "classic-chat",
-	ClassicMedia = "classic-media",
-	ClassicAux = "classic-aux",
-	ClassicMic = "classic-mic",
+	ClassicMaster = "Classic Master",
+	ClassicGame = "Classic Game",
+	ClassicChat = "Classic Chat",
+	ClassicMedia = "Classic Media",
+	ClassicAux = "Classic Aux",
+	ClassicMic = "Classic Mic",
 }
 
 enum ChangeChannelVolumeModes {

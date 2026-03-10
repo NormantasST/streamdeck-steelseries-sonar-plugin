@@ -2,7 +2,7 @@ import streamDeck from "@elgato/streamdeck";
 import { RotateOutputAudioDevice } from "../actions/rotate-audio-output-device";
 import { ROTATE_OUTPUT_DEVICES, VOLUME_MIXER } from "../constants/action-uuids.constants";
 import { getCurrentSonarSettingsAsync } from "../sonar-helper";
-import { ChangeChannelVolume } from "../actions/change-output-channel-volume";
+import { ChangeChannelVolume } from "../actions/change-channel-volume";
 
 export async function initializeGlobalSettingsAsync() {
     const globalSettings = await getCurrentSonarSettingsAsync();
