@@ -187,7 +187,7 @@ export const ClassicVolumeSettingsEnumMap = new Map<ChangeChannelVolumeChannels,
 
 export const VolumeChannelTranslations = new Map<ChangeChannelVolumeChannels, string>([
 	[ChangeChannelVolumeChannels.ClassicGame, "Game"],
-		[ChangeChannelVolumeChannels.ClassicChat, "Chat"],
+	[ChangeChannelVolumeChannels.ClassicChat, "Chat"],
 	[ChangeChannelVolumeChannels.ClassicMedia, "Media"],
 	[ChangeChannelVolumeChannels.ClassicAux, "Aux"],
 	[ChangeChannelVolumeChannels.ClassicMic, "Mic"],
