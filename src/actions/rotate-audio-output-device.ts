@@ -67,7 +67,14 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 		await this.notifyRelatedActionsAsync(globalSettings);
 	}
 
-	private static async initializeActionAsync(action: any) {
+	static async initializeActionAsync(action: any) {
+// Auto Initialize Settings. Becase Streamdeck does not.
+		const settings = await action.getSettings();
+		settings.rotationMode = settings.rotationMode ?? RotationMode.AllAutoDetect;
+		settings.maxTitleLength = settings.maxTitleLength ?? 20;
+		settings.allowExcludedDevices = settings.allowExcludedDevices ?? false;
+		await action.setSettings(settings);
+
 		await RotateOutputAudioDevice.updateThisActionAsync(action);
 	}
 
@@ -115,7 +122,7 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 				break;
 		}
 
-		throw logErrorAndThrow(logger, "Channel is not assigned");
+		throw logErrorAndThrow(logger, `Rotation Channel is not assigned ${rotationMode}`);
 	}
 
 	private static async setCurrentAudioOutputAsync(nextAudioDeviceId: string, rotationMode: RotationMode, sonarMode: SonarMode) {
@@ -204,7 +211,7 @@ export class RotateOutputAudioDevice extends SingletonAction<RotateOutputSetting
 type RotateOutputSettings = {
 	rotationMode: RotationMode,
 	maxTitleLength: number,
-	allowExcludedDevices?: boolean
+	allowExcludedDevices: boolean,
 };
 
 enum RotationMode {
