@@ -135,17 +135,19 @@ export class ChangeChannelVolume extends SingletonAction<ChangeChannelVolumeSett
 
 		switch (localSettings.mode) {
 			case ChangeChannelVolumeModes.SetVolumeTo:
-				return ""
+				const setVolumeTitle = ""
 					+ (showMode ? "Set\r\n" : "")
 					+ (showChannel ? `${simplifiedChannelName}\r\n` : "")
-					+ (showOutput ? `To ${localSettings.changeChannelValue}%` : "")
+					+ (showOutput ? `To ${localSettings.changeChannelValue}%` : "");
+				return setVolumeTitle.trim();
 			case ChangeChannelVolumeModes.IncreaseVolume:
 			case ChangeChannelVolumeModes.DecreaseVolume:
 				const sign = localSettings.mode === ChangeChannelVolumeModes.IncreaseVolume ? "+" : "-";
-				return ""
+				const changeVolumeTitle = ""
 					+ (showMode ? `${sign}${localSettings.changeChannelValue}%\r\n` : "")
 					+ (showChannel ? `${simplifiedChannelName.replace(" ", "\r\n")}\r\n` : "")
-					+ (showOutput ? `(${Math.round(currentChanel.volume * 100)}%)` : "")
+					+ (showOutput ? `(${Math.round(currentChanel.volume * 100)}%)` : "");
+				return changeVolumeTitle.trim();
 			default:
 				throw logErrorAndThrow(logger, `Unknown mode for generating title: ${localSettings.mode}`);
 		}
