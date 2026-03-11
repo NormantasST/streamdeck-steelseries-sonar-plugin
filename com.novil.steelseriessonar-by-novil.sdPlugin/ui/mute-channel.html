@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <title>Mute Channel Controls</title>
+    <meta charset="utf-8" />
+    <script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+</head>
+
+<body>
+    <!--
+        Learn more about property inspector components at https://sdpi-components.dev/docs/components
+    -->
+    <sdpi-item label="Mute Channel">
+        <sdpi-select setting="targetChannel" default="classic-master" placeholder="Please Choose a Channel">
+            <optgroup label="Classic">
+                <option value="classic-master">Master</option>
+                <option value="classic-game">Game</option>
+                <option value="classic-chat">Chat</option>
+                <option value="classic-media">Media</option>
+                <option value="classic-aux">Aux</option>
+                <option value="classic-mic">Microphone</option>
+            </optgroup>
+        </sdpi-select>
+    </sdpi-item>
+
+    <sdpi-item label="Auto Text">
+        <sdpi-checkbox-list setting="showTextComponents" columns="1">
+            <option value="channel" selected>Channel</option>
+            <option value="status" selected>Status</option>
+        </sdpi-checkbox-list>
+    </sdpi-item>
+
+</body>
+
+</html>
