@@ -34,6 +34,22 @@
 					"TitleAlignment": "middle"
 				}
 			]
+		},
+		{
+			"Name": "Mute Channel",
+			"UUID": "com.novil.steelseriessonar-by-novil.mute-channel-v1",
+			"Icon": "imgs/actions/mute-channel/icon",
+			"Tooltip": "Mute/Unmute Audio Channels",
+			"PropertyInspectorPath": "ui/mute-channel.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/mute-channel/key-unmuted",
+					"TitleAlignment": "middle"
+				}
+			]
 		}
 	],
 	"Category": "Sonar Controller",

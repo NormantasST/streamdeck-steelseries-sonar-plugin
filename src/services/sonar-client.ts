@@ -67,6 +67,15 @@ class SonarClient {
 		return this.doHttpRequestAsync(`/VolumeSettings/classic/${channel}/Volume/${updatedVolume}`, "PUT");
 	}
 
+	public setClassicMasterMuteAsync(isMuted: boolean): Promise<void> {
+		return this.doHttpRequestAsync(`/VolumeSettings/classic/Master/Mute/${isMuted}`, "PUT");
+	}
+
+	public setClassicChannelMuteAsync(isMuted: boolean, targetChannel: DeviceRole): Promise<void> {
+		const channel = ClassicVolumeSettingsEnumMap.get(targetChannel);
+		return this.doHttpRequestAsync(`/VolumeSettings/classic/${channel}/Mute/${isMuted}`, "PUT");
+	}
+
     private async doHttpRequestAsync<TResponse>(route: string, method: string, searchParams?: Record<string, string>, body?: object): Promise<TResponse> {
         let uri = await this.generateHttpRequestUriAsync(route, searchParams);
         const requestBody = {
