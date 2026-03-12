@@ -3,7 +3,7 @@ import { Agent as HttpAgent } from 'http';
 import { Agent as HttpsAgent } from 'https';
 import type { Response } from "node-fetch";
 import fetch from "node-fetch";
-import type { AudioDevice, ClassicRedirection, DeviceRole, FallbackSetting, FallbackSettings, RedirectionEnum, SonarMode, StreamRedirection, StreamRedirectionEnum, VolumeSettings } from '../models/types/sonar-models.type';
+import type { AudioDevice, ChatMixResponse, ClassicRedirection, DeviceRole, FallbackSetting, FallbackSettings, RedirectionEnum, SonarMode, StreamRedirection, StreamRedirectionEnum, VolumeSettings } from '../models/types/sonar-models.type';
 import { logErrorAndThrow } from '../helpers/streamdeck-logger-helper';
 import { ClassicVolumeSettingsEnumMap, RedirectionEnumMap, StreamRedirectionEnumMap } from '../models/converters/sonar-model-converts';
 
@@ -65,6 +65,14 @@ class SonarClient {
 	public setClassicChannelVolumeAsync(updatedVolume: number, targetChannel: DeviceRole): Promise<void> {
         const channel = ClassicVolumeSettingsEnumMap.get(targetChannel);
 		return this.doHttpRequestAsync(`/VolumeSettings/classic/${channel}/Volume/${updatedVolume}`, "PUT");
+	}
+
+	public async getChatMixAsync(): Promise<ChatMixResponse> {
+		return this.doHttpRequestAsync<ChatMixResponse>('/ChatMix', 'GET');
+	}
+
+	public async setChatMixAsync(balance: number): Promise<ChatMixResponse> {
+		return this.doHttpRequestAsync<ChatMixResponse>(`/ChatMix?balance=${balance}`, 'PUT');
 	}
 
     private async doHttpRequestAsync<TResponse>(route: string, method: string, searchParams?: Record<string, string>, body?: object): Promise<TResponse> {

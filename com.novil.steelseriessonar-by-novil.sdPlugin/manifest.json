@@ -34,6 +34,22 @@
 					"TitleAlignment": "middle"
 				}
 			]
+		},
+		{
+			"Name": "ChatMix Controller",
+			"UUID": "com.novil.steelseriessonar-by-novil.chat-mix-controller-v1",
+			"Icon": "imgs/actions/chat-mix-controller/icon",
+			"Tooltip": "Controls Game/Chat Audio Balance",
+			"PropertyInspectorPath": "ui/chat-mix-controller.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/chat-mix-controller/key-balanced",
+					"TitleAlignment": "middle"
+				}
+			]
 		}
 	],
 	"Category": "Sonar Controller",
