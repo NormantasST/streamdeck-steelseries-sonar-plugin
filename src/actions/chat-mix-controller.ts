@@ -33,7 +33,7 @@ export class ChatMixController extends SingletonAction<ChatMixControllerSettings
 		settings.channel = settings.channel ?? ChatMixControllerChannels.Chat;
 		settings.mode = settings.mode ?? ChatMixControllerModes.Increase;
 		settings.changeValue = settings.changeValue ?? 0.05;
-		settings.showTextComponents = settings.showTextComponents ?? ["channel", "channel", "status"];
+		settings.showTextComponents = settings.showTextComponents ?? ["change", "channel", "status"];
 		await action.setSettings(settings);
 
 		await ChatMixController.updateThisActionAsync(action);
@@ -97,13 +97,13 @@ export class ChatMixController extends SingletonAction<ChatMixControllerSettings
 		const showChannel = localSettings.showTextComponents.includes("channel");
 		const showStatus = localSettings.showTextComponents.includes("status");
 
-		if (localSettings.mode === ChatMixControllerModes.Increase)
+		if (localSettings.mode == ChatMixControllerModes.Increase)
 			return (""
 				+ (showChange ? `+${changeValuePercentage}%\r\n` : "")
 				+ (showChannel ? `${ChatMixTranslations.get(localSettings.channel)}\r\n` : "")
-				+ (showStatus ? `${sign}${Math.abs(currentBalancePercentage)}` : "")).trim()
+				+ (showStatus ? `(${sign}${Math.abs(currentBalancePercentage)}%)` : "")).trim()
 
-		if (localSettings.mode === ChatMixControllerModes.SetVolume)
+		if (localSettings.mode == ChatMixControllerModes.SetVolume)
 			return (""
 				+ (showChange ? `Set\r\n` : "")
 				+ (showChannel ? `${ChatMixTranslations.get(localSettings.channel)}\r\n` : "")

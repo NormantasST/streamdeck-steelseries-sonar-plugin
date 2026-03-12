@@ -12,7 +12,7 @@
         Learn more about property inspector components at https://sdpi-components.dev/docs/components
     -->
     <sdpi-item label="Channel">
-        <sdpi-select setting="mode" default="chat" placeholder="Please Choose a Channel">
+        <sdpi-select setting="channel" default="chat" placeholder="Please Choose a Channel">
             <option value="chat">Chat</option>
             <option value="game">Game</option>
         </sdpi-select>
@@ -33,6 +33,7 @@
             placeholder="Select Percentage %"
             min="0"
             max="1"
+            step="0.01"
             showlabels>
             <span slot="min">0%</span>
             <span slot="max">100%</span>
