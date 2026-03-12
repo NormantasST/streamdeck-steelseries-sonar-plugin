@@ -27,41 +27,49 @@ export async function getCurrentSonarSettingsAsync(): Promise<GlobalSettings> {
             deviceId: 'Master',
             deviceName: 'Master',
             volume: classicVolumeSettings?.masters?.classic?.volume ?? 0,
+            muted: classicVolumeSettings?.masters?.classic?.muted ?? false,
         },
         micChannel: {
             deviceId: 'Microphone',
             deviceName: 'Microphone',
             volume: classicVolumeSettings?.devices[DeviceRole.Microphone]?.classic?.volume ?? 0,
+            muted: classicVolumeSettings?.devices[DeviceRole.Microphone]?.classic?.muted ?? false,
         },
         gameChannel: {
             deviceId: gameDevice?.id ?? 'Unknown',
             deviceName: gameDevice?.friendlyName ?? 'Unknown',
             volume: classicVolumeSettings?.devices[DeviceRole.Game]?.classic?.volume ?? 0,
+            muted: classicVolumeSettings?.devices[DeviceRole.Game]?.classic?.muted ?? false,
         },
         chatChannel: {
             deviceId: chatDevice?.id ?? 'Unknown',
             deviceName: chatDevice?.friendlyName ?? 'Unknown',
             volume: classicVolumeSettings?.devices[DeviceRole.Chat]?.classic?.volume ?? 0,
+            muted: classicVolumeSettings?.devices[DeviceRole.Chat]?.classic?.muted ?? false,
         },
         mediaChannel: {
             deviceId: mediaDevice?.id ?? 'Unknown',
             deviceName: mediaDevice?.friendlyName ?? 'Unknown',
             volume: classicVolumeSettings?.devices[DeviceRole.Media]?.classic?.volume ?? 0,
+            muted: classicVolumeSettings?.devices[DeviceRole.Media]?.classic?.muted ?? false,
         },
         auxChannel: {
             deviceId: auxDevice?.id ?? 'Unknown',
             deviceName: auxDevice?.friendlyName ?? 'Unknown',
             volume: classicVolumeSettings?.devices[DeviceRole.Aux]?.classic?.volume ?? 0,
+            muted: classicVolumeSettings?.devices[DeviceRole.Aux]?.classic?.muted ?? false,
         },
         personalMixChannel: {
             deviceId: personalDevice?.id ?? 'Unknown',
             deviceName: personalDevice?.friendlyName ?? 'Unknown',
             volume: 0,
+            muted: false,
         },
         streamMixChannel: {
             deviceId: streamMixDevice?.id ?? 'Unknown',
             deviceName: streamMixDevice?.friendlyName ?? 'Unknown',
-            volume: 0
+            volume: 0,
+            muted: false,
         }
     };
 

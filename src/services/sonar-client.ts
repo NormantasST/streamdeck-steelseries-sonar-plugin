@@ -73,6 +73,15 @@ class SonarClient {
 
 	public async setChatMixAsync(balance: number): Promise<ChatMixResponse> {
 		return this.doHttpRequestAsync<ChatMixResponse>(`/ChatMix?balance=${balance}`, 'PUT');
+    }
+
+	public setClassicMasterMuteAsync(isMuted: boolean): Promise<void> {
+		return this.doHttpRequestAsync(`/VolumeSettings/classic/Master/Mute/${isMuted}`, "PUT");
+	}
+
+	public setClassicChannelMuteAsync(isMuted: boolean, targetChannel: DeviceRole): Promise<void> {
+		const channel = ClassicVolumeSettingsEnumMap.get(targetChannel);
+		return this.doHttpRequestAsync(`/VolumeSettings/classic/${channel}/Mute/${isMuted}`, "PUT");
 	}
 
     private async doHttpRequestAsync<TResponse>(route: string, method: string, searchParams?: Record<string, string>, body?: object): Promise<TResponse> {
