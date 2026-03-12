@@ -33,7 +33,7 @@ export class ChatMixController extends SingletonAction<ChatMixControllerSettings
 		settings.channel = settings.channel ?? ChatMixControllerChannels.Chat;
 		settings.mode = settings.mode ?? ChatMixControllerModes.Increase;
 		settings.changeValue = settings.changeValue ?? 0.05;
-		settings.showTextComponents = settings.showTextComponents ?? ["channel", "percentage", "change"];
+		settings.showTextComponents = settings.showTextComponents ?? ["channel", "channel", "status"];
 		await action.setSettings(settings);
 
 		await ChatMixController.updateThisActionAsync(action);
@@ -80,7 +80,7 @@ export class ChatMixController extends SingletonAction<ChatMixControllerSettings
 				case ChatMixControllerChannels.Chat:
 					return Math.min(changeValue, 1);
 				case ChatMixControllerChannels.Game:
-					return Math.max(changeValue - 1, -1);
+					return Math.max(changeValue * -1, -1);
 				default:
 					throw logErrorAndThrow(logger, `Can't get updated balance for mode: ${localSettings.mode}`);
 			}
@@ -89,7 +89,8 @@ export class ChatMixController extends SingletonAction<ChatMixControllerSettings
 	}
 
 	private static generateTitle(globalSettings: GlobalSettings, localSettings: ChatMixControllerSettings): string {
-		const currentBalance = globalSettings.chatMixBalance ?? 0;
+		const changeValuePercentage = Math.round(localSettings.changeValue * 100);
+		const currentBalancePercentage = Math.round(globalSettings.chatMixBalance * 100);
 		const sign = localSettings.channel == ChatMixControllerChannels.Chat ? "+" : "-";
 
 		const showChange = localSettings.showTextComponents.includes("change");
@@ -98,15 +99,15 @@ export class ChatMixController extends SingletonAction<ChatMixControllerSettings
 
 		if (localSettings.mode === ChatMixControllerModes.Increase)
 			return (""
-				+ (showChange ? `+${localSettings.changeValue}\r\n` : "")
+				+ (showChange ? `+${changeValuePercentage}%\r\n` : "")
 				+ (showChannel ? `${ChatMixTranslations.get(localSettings.channel)}\r\n` : "")
-				+ (showStatus ? `${sign}${Math.abs(currentBalance)}` : "")).trim()
+				+ (showStatus ? `${sign}${Math.abs(currentBalancePercentage)}` : "")).trim()
 
 		if (localSettings.mode === ChatMixControllerModes.SetVolume)
 			return (""
-				+ (showChange ? `$Set\r\n` : "")
+				+ (showChange ? `Set\r\n` : "")
 				+ (showChannel ? `${ChatMixTranslations.get(localSettings.channel)}\r\n` : "")
-				+ (showStatus ? `$To +${localSettings.changeValue}` : "")).trim()
+				+ (showStatus ? `To +${changeValuePercentage}%` : "")).trim()
 
 		throw logErrorAndThrow(logger, `Can't generate title for mode: ${localSettings.mode}`);
 	}
