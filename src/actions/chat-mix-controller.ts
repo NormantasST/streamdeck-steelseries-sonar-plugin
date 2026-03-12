@@ -63,8 +63,7 @@ export class ChatMixController extends SingletonAction<ChatMixControllerSettings
 
 	private static getUpdatedChatMixBalance(localSettings: ChatMixControllerSettings, globalSettings: GlobalSettings): number {
 		const currentBalance = globalSettings.chatMixBalance ?? 0;
-		const changePercentage = localSettings.changeValue / 100;
-		const changeValue = changePercentage * 2; // Convert percentage change to API range (-1 to 1)
+		const changeValue = localSettings.changeValue
 
 		if (localSettings.mode === ChatMixControllerModes.Increase)
 			switch (localSettings.channel) {
