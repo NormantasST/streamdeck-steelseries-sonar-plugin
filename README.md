@@ -21,6 +21,12 @@ This project is free to use for personal and commercial use. It would be nice to
 - Set Sonar Title Max Length: Allows to control the titles' length which is auto-generated from Sonar. If value is set to 0 it will show the whole title.
 - User can select if they want to include or exclude `Excluded Devices`.
 
+### Rotate Microphone Output
+
+- **Rotates your current microphone device**: `Auto-Detect` (default), `Classic-Only`, `Stream-Only`.
+- Set Sonar Title Max Length: Allows to control the titles' length which is auto-generated from Sonar. If value is set to 0 it will show the whole title.
+- User can select if they want to include or exclude `Excluded Devices`.
+
 ### Volume Mixer
 
 - **Modes:**: `Increase Volume By %`, `Decrease Volume By %`, `Set Volume To %`.

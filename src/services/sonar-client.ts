@@ -16,7 +16,6 @@ class SonarClient {
 
     constructor() { }
 
-    // Updates Channel into Output to selected id.
     public async putStreamOutputAudioDeviceAsync(deviceId: string, redirectionId: StreamRedirectionEnum): Promise<void> {
         const channel = StreamRedirectionEnumMap.get(redirectionId);
         await this.doHttpRequestAsync(`/StreamRedirections/${channel}/deviceId/${deviceId}`, "PUT");
@@ -33,8 +32,11 @@ class SonarClient {
 
     // Gets all excluded devices (list options: chatRenderer, game, chatCapture, media, aux)
     public async getAllExcludedGameAudioDevicesAsync(): Promise<FallbackSetting[]> {
-        const response = await this.doHttpRequestAsync<FallbackSettings>("/FallbackSettings/lists", "GET");
-        return response.game.filter((device) => device.isActive && !device.isExcluded);
+        return this.getAllAvailableFallbackAudioDevicesAsync("game");
+    }
+
+    public async getAllExcludedMicrophoneAudioDevicesAsync(): Promise<FallbackSetting[]> {
+        return this.getAllAvailableFallbackAudioDevicesAsync("chatCapture");
     }
 
     public getDeviceRedirectionsAsync(): Promise<ClassicRedirection[]> {
@@ -48,6 +50,11 @@ class SonarClient {
     public async getAllOutputAudioDevicesAsync(): Promise<AudioDevice[]> {
         const response = await this.getAllAudioDevicesAsync();
         return response.filter((device) => device.role == "none" && device.dataFlow == "render");
+    }
+
+    public async getAllInputAudioDevicesAsync(): Promise<AudioDevice[]> {
+        const response = await this.getAllAudioDevicesAsync();
+        return response.filter((device) => device.role == "none" && device.dataFlow == "capture");
     }
 
     public getAllAudioDevicesAsync(): Promise<AudioDevice[]> {
@@ -83,6 +90,11 @@ class SonarClient {
 		const channel = ClassicVolumeSettingsEnumMap.get(targetChannel);
 		return this.doHttpRequestAsync(`/VolumeSettings/classic/${channel}/Mute/${isMuted}`, "PUT");
 	}
+
+    private async getAllAvailableFallbackAudioDevicesAsync(channel: keyof FallbackSettings): Promise<FallbackSetting[]> {
+        const response = await this.doHttpRequestAsync<FallbackSettings>("/FallbackSettings/lists", "GET");
+        return response[channel].filter((device) => device.isActive && !device.isExcluded);
+    }
 
     private async doHttpRequestAsync<TResponse>(route: string, method: string, searchParams?: Record<string, string>, body?: object): Promise<TResponse> {
         let uri = await this.generateHttpRequestUriAsync(route, searchParams);

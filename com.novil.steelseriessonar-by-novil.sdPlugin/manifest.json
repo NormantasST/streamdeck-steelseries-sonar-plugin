@@ -1,6 +1,6 @@
 {
 	"Name": "Sonar Controller",
-	"Version": "1.4.0.0",
+	"Version": "1.5.0.0",
 	"Author": "NOVIL, Normantas Stankevičius",
 	"Actions": [
 		{
@@ -15,6 +15,22 @@
 			"States": [
 				{
 					"Image": "imgs/actions/rotate-output-devices/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		},
+		{
+			"Name": "Rotate Microphone Device",
+			"UUID": "com.novil.steelseriessonar-by-novil.rotate-microphone-device-v1",
+			"Icon": "imgs/actions/rotate-microphone/icon",
+			"Tooltip": "Rotates Selected Microphone Device",
+			"PropertyInspectorPath": "ui/rotate-microphone.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/rotate-microphone/key",
 					"TitleAlignment": "middle"
 				}
 			]
@@ -62,7 +78,7 @@
 			],
 			"States": [
 				{
-					"Image": "imgs/actions/chat-mix-controller/key-0",
+					"Image": "imgs/actions/chat-mix-controller/key-chat-10",
 					"TitleAlignment": "middle"
 				}
 			]

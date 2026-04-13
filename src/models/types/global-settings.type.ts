@@ -6,6 +6,7 @@ export type GlobalSettings = {
     sonarMode: SonarMode,
     masterChannel: DeviceData,
     micChannel: DeviceData;
+    streamMicChannel: DeviceData,
     gameChannel: DeviceData,
     chatChannel: DeviceData,
     mediaChannel: DeviceData,

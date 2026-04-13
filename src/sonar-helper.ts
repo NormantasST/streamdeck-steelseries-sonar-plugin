@@ -18,6 +18,11 @@ export async function getCurrentSonarSettingsAsync(): Promise<GlobalSettings> {
     const personalDevice = allOutputDevices.find(x => x.id == streamRedirections.find((x) => x.streamRedirectionId == StreamRedirectionEnum.PersonalMix)?.deviceId);
     const streamMixDevice = allOutputDevices.find(x => x.id == streamRedirections.find((x) => x.streamRedirectionId == StreamRedirectionEnum.StreamMix)?.deviceId);
 
+    const allInputDevices = await sonarClient.getAllInputAudioDevicesAsync();
+    const classicMicDevice = allInputDevices.find(x => x.id == classicRedirections.find((x) => x.id == RedirectionEnum.Microphone)?.deviceId);
+    const streamMicDevice = allInputDevices.find(x => x.id == streamRedirections.find((x) => x.streamRedirectionId == StreamRedirectionEnum.Microphone)?.deviceId);
+
+
     const classicVolumeSettings = await sonarClient.getClassicVolumeSettingsAsync();
 
     const globalSettings: GlobalSettings = {
@@ -30,10 +35,16 @@ export async function getCurrentSonarSettingsAsync(): Promise<GlobalSettings> {
             muted: classicVolumeSettings?.masters?.classic?.muted ?? false,
         },
         micChannel: {
-            deviceId: 'Microphone',
-            deviceName: 'Microphone',
+            deviceId: classicMicDevice?.id ?? 'Unknown',
+            deviceName: classicMicDevice?.friendlyName ?? 'Unknown',
             volume: classicVolumeSettings?.devices[DeviceRole.Microphone]?.classic?.volume ?? 0,
             muted: classicVolumeSettings?.devices[DeviceRole.Microphone]?.classic?.muted ?? false,
+        },
+        streamMicChannel: {
+            deviceId: streamMicDevice?.id ?? 'Unknown',
+            deviceName: streamMicDevice?.friendlyName ?? 'Unknown',
+            volume: 0,
+            muted: false,
         },
         gameChannel: {
             deviceId: gameDevice?.id ?? 'Unknown',
