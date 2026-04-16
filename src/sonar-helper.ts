@@ -22,7 +22,6 @@ export async function getCurrentSonarSettingsAsync(): Promise<GlobalSettings> {
     const classicMicDevice = allInputDevices.find(x => x.id == classicRedirections.find((x) => x.id == RedirectionEnum.Microphone)?.deviceId);
     const streamMicDevice = allInputDevices.find(x => x.id == streamRedirections.find((x) => x.streamRedirectionId == StreamRedirectionEnum.Microphone)?.deviceId);
 
-
     const classicVolumeSettings = await sonarClient.getClassicVolumeSettingsAsync();
 
     const globalSettings: GlobalSettings = {
