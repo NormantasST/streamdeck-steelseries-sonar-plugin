@@ -112,24 +112,20 @@ export class RotateMichrophoneDevice extends SingletonAction<RotateMicrophoneSet
 	private static async setCurrentAudioInputAsync(nextAudioDeviceId: string, rotationMode: RotationMode, sonarMode: SonarMode) {
 		switch (rotationMode) {
 			case RotationMode.ClassicOnly:
-				await sonarClient.putOutputAudioDeviceAsync(nextAudioDeviceId, RedirectionEnum.Microphone);
-				break;
+				return await sonarClient.putOutputAudioDeviceAsync(nextAudioDeviceId, RedirectionEnum.Microphone);
 			case RotationMode.StreamModeOnly:
-				await sonarClient.putStreamOutputAudioDeviceAsync(nextAudioDeviceId, StreamRedirectionEnum.Microphone);
-				break;
+				return await sonarClient.putStreamOutputAudioDeviceAsync(nextAudioDeviceId, StreamRedirectionEnum.Microphone);
 			case RotationMode.AutoSelect:
-				if (sonarMode == SonarMode.Classic) {
-					await sonarClient.putOutputAudioDeviceAsync(nextAudioDeviceId, RedirectionEnum.Microphone);
-					break;
-				}
+				if (sonarMode == SonarMode.Classic) 
+					return await sonarClient.putOutputAudioDeviceAsync(nextAudioDeviceId, RedirectionEnum.Microphone);
+				
+				if (sonarMode == SonarMode.Streaming) 
+					return await sonarClient.putStreamOutputAudioDeviceAsync(nextAudioDeviceId, StreamRedirectionEnum.Microphone);
 
-				if (sonarMode == SonarMode.Streaming) {
-					await sonarClient.putStreamOutputAudioDeviceAsync(nextAudioDeviceId, StreamRedirectionEnum.Microphone);
-					break;
-				}
-		}
+				break;
+			}
 
-		throw logErrorAndThrow(logger, `Unable to update microphone mode for ${rotationMode}`);
+		throw logErrorAndThrow(logger, `Unable to update microphone mode for ${rotationMode} mode: ${sonarMode}`);
 	}
 
 	private static getTitleFromSettings(globalSettings: GlobalSettings, localSettings: RotateMicrophoneSettings) {
