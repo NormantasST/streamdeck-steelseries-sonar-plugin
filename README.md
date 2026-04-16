@@ -4,6 +4,8 @@
 
 Stream Deck plugin to control Steel Series Sonar application. As this is a hobby non-commercial there are no promises to maintain and keep the project updated. 
 
+### Download: [Sonar Controller in Elgato Marketplace](https://marketplace.elgato.com/product/steelseriessonar-by-novil-f42b3ce9-15be-4f64-bd63-b8aa7fc152c3)
+
 ## Donating / Commercial Use
 
 This project is free to use for personal and commercial use. It would be nice to contribute any amount to my [PayPal](https://www.paypal.com/donate/?hosted_button_id=M7YRNV44SUZV6) as Software Developers can not live on *free* if you find value from the project :)
