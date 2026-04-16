@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <title>Rotate Microphone Mode</title>
+    <meta charset="utf-8" />
+    <script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+</head>
+
+<body>
+    <sdpi-item label="Rotation Mode">
+        <sdpi-select setting="rotationMode" default="auto-select" placeholder="Please choose a rotation mode">
+            <option value="auto-select">Auto-Select</option>
+            <option value="classic-only">Classic-Only</option>
+            <option value="stream-mode-only">Stream-Mode Only</option>
+        </sdpi-select>
+    </sdpi-item>
+
+    <sdpi-item label="Sonar Max Title Length">
+        <sdpi-range
+            setting="maxTitleLength"
+            default="20"
+            min="0"
+            max="100"
+            step="1"
+            showlabels>
+        </sdpi-range>
+    </sdpi-item>
+
+    <sdpi-item label="Allow Excluded Devices">
+        <sdpi-checkbox setting="allowExcludedDevices" label="Will use excluded devices" default="false"></sdpi-checkbox>
+    </sdpi-item>
+</body>
+
+</html>

@@ -19,6 +19,10 @@ export type StreamRedirection = {
 
 export type FallbackSettings = {
     game: FallbackSetting[]
+    chatCapture: FallbackSetting[]
+    chatRender: FallbackSetting[]
+    media: FallbackSetting[]
+    aux: FallbackSetting[]
 }
 
 export type FallbackSetting = {
